@@ -1,10 +1,34 @@
-.card{
-    position: relative;
+.card {
+    perspective: 1000px;  /* Perspective to create 3D flip effect */
+    width: 100px;  /* Set a specific width for consistency */
+    height: 150px; /* Set a specific height for consistency */
 }
 
-.card img{
+.card div {
+    position: relative;
     width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.4s;
+}
+
+.card .flipped {
+    transform: rotateY(180deg); /* Flip the card on Y-axis */
+}
+
+.card img {
+    width: 100%;
+    height: 100%;
     display: block;
-    border: 2px solid #fff;
-    border-radius: 6px;
+    border-radius: 10px;
+    position: absolute;
+    backface-visibility: hidden; /* Hide back when rotated */
+}
+
+.card .front {
+    transform: rotateY(180deg); /* Hide the front initially */
+}
+
+.card .back {
+    transform: rotateY(0deg); /* Show the back by default */
 }
