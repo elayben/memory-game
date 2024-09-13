@@ -17,7 +17,7 @@ Memory Rush is a card-matching memory game. The objective is to match all the pa
 ## Preview 👀
 
 ### Start a New Game
-![New Game Image](public/pics/newGame.png)  
+![New Game Image]()  
 
 ### During the Game
 ![During Game Image](public/pics/midGame.png)  
