@@ -1,4 +1,3 @@
-//App.js
 import './App.css';
 import { useEffect, useState } from 'react';
 import SingleCard from './components/SingleCard';
@@ -22,23 +21,25 @@ const cardsImages = [
 
 function App() {
 
-
   const [cards, setCards] = useState([]);
   const [turns, setTurns] = useState(0);
   const [choiseOne, setChoiseOne] = useState(null);
   const [choiseTwo, setChoiseTwo] = useState(null);
   const [disabled, setDisabled] = useState(false);
-
+  const [matches, setMatches] = useState(0);
+  const [gameOver, setGameOver] = useState(false); // To track if game is won
 
   // shuffle the cards
   const shuffleCards = () => {
     clearChoices();
+    setGameOver(false);
     const shuffleCards = [...cardsImages, ...cardsImages]
       .sort(() => Math.random() - 0.5)
       .map((card) => ({ ...card, id: Math.random() }));
 
     setCards(shuffleCards);
     setTurns(0);
+    setMatches(0);
   }
 
   // handle choise of card
@@ -56,6 +57,7 @@ function App() {
     if (choiseOne && choiseTwo) {
       setDisabled(true);
       if (choiseOne.src === choiseTwo.src) {
+        setMatches(prevMatches => prevMatches + 1);
         setCards(prevCards => {
           return prevCards.map(card => {
             if (card.src === choiseOne.src) {
@@ -65,17 +67,22 @@ function App() {
             }
           })
         })
-        setTurns(turns + 1);
         clearChoices();
       } else {
-        setTurns(turns + 1);
         setTimeout(() => {
           clearChoices();
         }, 1500);
       }
+      setTurns(prevTurns => prevTurns + 1);
     }
   }, [choiseOne, choiseTwo]);
 
+  // check for win condition
+  useEffect(() => {
+    if (matches === cards.length / 2 && cards.length > 0) {
+      setGameOver(true);
+    }
+  }, [matches, cards.length]);
 
   // reset the turns
   const clearChoices = () => {
@@ -89,6 +96,7 @@ function App() {
     shuffleCards();
   }
     , []);
+
   return (
     <div className="App">
       <h1> Memory Rush </h1>
@@ -105,7 +113,11 @@ function App() {
           />
         ))}
       </div>
+
       <p> Turns: {turns} </p>
+      <p> Matches: {matches} </p>
+
+      {gameOver && <div className="won-message">You Won! 🎉</div>}
     </div>
   );
 }
