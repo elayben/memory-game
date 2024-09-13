@@ -32,6 +32,7 @@ function App() {
 
   // shuffle the cards
   const shuffleCards = () => {
+    clearChoices();
     const shuffleCards = [...cardsImages, ...cardsImages]
       .sort(() => Math.random() - 0.5)
       .map((card) => ({ ...card, id: Math.random() }));
@@ -82,6 +83,12 @@ function App() {
     setChoiseTwo(null);
     setDisabled(false);
   }
+
+  // shuffle the cards on first render
+  useEffect(() => {
+    shuffleCards();
+  }
+    , []);
   return (
     <div className="App">
       <h1> Memory Rush </h1>
@@ -98,7 +105,7 @@ function App() {
           />
         ))}
       </div>
-      <h2> Turns: {turns} </h2>
+      <p> Turns: {turns} </p>
     </div>
   );
 }
